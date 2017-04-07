@@ -1,0 +1,2 @@
+%run cfr_param_search.py configs/example_ihdp.txt 10
+%rn evaluate configs/example_ihdp.txt 0 "{p_alpha:0}"

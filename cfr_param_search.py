@@ -3,6 +3,8 @@ import os
 import numpy as np
 from subprocess import call
 
+print "start"
+
 def load_config(cfg_file):
     cfg = {}
 
@@ -79,4 +81,5 @@ if __name__ == "__main__":
     if len(sys.argv) < 3:
         print 'Usage: python cfr_param_search.py <config file> <num runs>'
     else:
+        print "run"
         run(sys.argv[1], int(sys.argv[2]))
