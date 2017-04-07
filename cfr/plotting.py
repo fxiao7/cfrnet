@@ -138,7 +138,7 @@ def select_parameters(results, configs, stop_set, stop_criterion, choice_set, ch
                 if k in results['test']:
                     results_sel['test'][k][ic,ie,] = results['test'][k][ic,ie,i_sel[ic,ie],]
 
-    print 'Early stopping:'
+    print('Early stopping:')
     print np.mean(i_sel,1)
 
     ''' Select configuration '''

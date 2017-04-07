@@ -323,7 +323,7 @@ def evaluate_result(result, data, validation=False,
 
 def evaluate(output_dir, data_path_train, data_path_test=None, binary=False):
 
-    print '\nEvaluating experiment %s...' % output_dir
+    print('\nEvaluating experiment %s...' % output_dir)
 
     # Load results for all configurations
     results = load_results(output_dir)
@@ -337,17 +337,17 @@ def evaluate(output_dir, data_path_train, data_path_test=None, binary=False):
     # Test whether multiple experiments (different data)
     multiple_exps = (configs[0]['experiments'] > 1)
     if Log.VERBOSE and multiple_exps:
-        print 'Multiple data (experiments) detected'
+        print('Multiple data (experiments) detected')
 
     # Load training data
     if Log.VERBOSE:
-        print 'Loading TRAINING data %s...' % data_path_train
+        print('Loading TRAINING data %s...' % data_path_train)
     data_train = load_data(data_path_train)
 
     # Load test data
     if data_path_test is not None:
         if Log.VERBOSE:
-            print 'Loading TEST data %s...' % data_path_test
+            print('Loading TEST data %s...' % data_path_test)
         data_test = load_data(data_path_test)
     else:
         data_test = None
@@ -359,10 +359,10 @@ def evaluate(output_dir, data_path_train, data_path_test=None, binary=False):
     configs_out = []
     i = 0
     if Log.VERBOSE:
-        print 'Evaluating result (out of %d): ' % len(results)
+        print('Evaluating result (out of %d): ' % len(results))
     for result in results:
         if Log.VERBOSE:
-            print 'Evaluating %d...' % (i+1)
+            print('Evaluating %d...' % (i+1))
 
         try:
             eval_train = evaluate_result(result['train'], data_train,
@@ -380,8 +380,8 @@ def evaluate(output_dir, data_path_train, data_path_test=None, binary=False):
             eval_results.append({'train': eval_train, 'valid': eval_valid, 'test': eval_test})
             configs_out.append(configs[i])
         except NaNException as e:
-            print 'WARNING: Encountered NaN exception. Skipping.'
-            print e
+            print('WARNING: Encountered NaN exception. Skipping.')
+            print(e)
 
         i += 1
 

@@ -61,7 +61,7 @@ def evaluate(config_file, overwrite=False, filters=None):
         pickle.dump((eval_results, configs), open(eval_path, "wb"))
     else:
         if Log.VERBOSE:
-            print 'Loading evaluation results from %s...' % eval_path
+            print('Loading evaluation results from %s...' % eval_path)
         # Load evaluation
         eval_results, configs = pickle.load(open(eval_path, "rb"))
 
@@ -82,7 +82,7 @@ def evaluate(config_file, overwrite=False, filters=None):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print 'Usage: python evaluate.py <config_file> <overwrite (default 0)> <filters (optional)>'
+        print('Usage: python evaluate.py <config_file> <overwrite (default 0)> <filters (optional)>')
     else:
         config_file = sys.argv[1]
 
