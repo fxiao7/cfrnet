@@ -1,8 +1,10 @@
 import numpy as np
 import os
 
-from logger import Logger as Log
-from loader import *
+from cfr.logger import Logger as Log
+from cfr.loader import *
+#from logger import Logger as Log
+#from loader import *
 
 POL_CURVE_RES = 40
 

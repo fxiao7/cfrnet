@@ -5,7 +5,7 @@ import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
 
-from loader import *
+from cfr.loader import *
 
 LINE_WIDTH = 2
 FONTSIZE_LGND = 8
@@ -139,7 +139,7 @@ def select_parameters(results, configs, stop_set, stop_criterion, choice_set, ch
                     results_sel['test'][k][ic,ie,] = results['test'][k][ic,ie,i_sel[ic,ie],]
 
     print('Early stopping:')
-    print np.mean(i_sel,1)
+    print(np.mean(i_sel,1))
 
     ''' Select configuration '''
     results_all = [dict([(k1, dict([(k2, v[i,]) for k2,v in results_sel[k1].iteritems()]))
@@ -365,15 +365,15 @@ def plot_cfr_evaluation_bin(results, configs, output_dir):
                 results_sel['valid'][k][ia,ie,] = results['valid'][k][ia,ie,i_sel[ia,ie],]
                 results_sel['test'][k][ia,ie,] = results['test'][k][ia,ie,i_sel[ia,ie],]
 
-    print 'Early stopping:'
-    print np.mean(i_sel,1)
+    print('Early stopping:')
+    print(np.mean(i_sel,1))
 
     ''' Select alpha based on mean criterion'''
     i_skip=1
     A = np.mean(results_sel[ALPHA_CHOICE_SET][ALPHA_CRITERION],1)
     ia = i_skip + A[i_skip:].argmin()
-    print 'Alpha selection criterion:'
-    print A
+    print('Alpha selection criterion:')
+    print(A)
 
     ''' Print evaluation results '''
     results_alphas = [dict([(k1, dict([(k2, v[i,]) for k2,v in results_sel[k1].iteritems()]))
@@ -389,7 +389,7 @@ def plot_cfr_evaluation_bin(results, configs, output_dir):
             m = ' *'
         labels.append('CFR-%d-%d %s a=%.2g%s' % (di,do,configs[0]['imb_fun'],alphas[i],m))
     eval_str = evaluation_summary_bin(results_alphas, labels, output_dir)
-    print eval_str
+    print(eval_str)
 
     with open('%s/results_summary.txt' % output_dir, 'w') as f:
         f.write('Selected early stopping based on individual \'%s\' on \'%s\'\n' % (EARLY_STOP_CRITERION_BIN, EARLY_STOP_SET_BIN))

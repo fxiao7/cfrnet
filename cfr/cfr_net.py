@@ -1,7 +1,7 @@
 import tensorflow as tf
 import numpy as np
 
-from util import *
+from cft.util import *
 
 class cfr_net(object):
     """

@@ -3,8 +3,6 @@ import os
 import numpy as np
 from subprocess import call
 
-print "start"
-
 def load_config(cfg_file):
     cfg = {}
 
@@ -53,7 +51,7 @@ def save_used_cfg(cfg, used_cfg_file):
 
 def run(cfg_file, num_runs):
     configs = load_config(cfg_file)
-
+    print("config loaded")
     outdir = configs['outdir'][0]
     used_cfg_file = '%s/used_configs.txt' % outdir
 
@@ -64,22 +62,22 @@ def run(cfg_file, num_runs):
     for i in range(num_runs):
         cfg = sample_config(configs)
         if is_used_cfg(cfg, used_cfg_file):
-            print 'Configuration used, skipping'
+            print('Configuration used, skipping')
             continue
 
         save_used_cfg(cfg, used_cfg_file)
 
-        print '------------------------------'
-        print 'Run %d of %d:' % (i+1, num_runs)
-        print '------------------------------'
-        print '\n'.join(['%s: %s' % (str(k), str(v)) for k,v in cfg.iteritems() if len(configs[k])>1])
+        print('------------------------------')
+        print('Run %d of %d:' % (i+1, num_runs))
+        print('------------------------------')
+        print('\n'.join(['%s: %s' % (str(k), str(v)) for k,v in cfg.iteritems() if len(configs[k])>1]))
 
         flags = ' '.join('--%s %s' % (k,str(v)) for k,v in cfg.iteritems())
         call('python cfr_net_train.py %s' % flags, shell=True)
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print 'Usage: python cfr_param_search.py <config file> <num runs>'
+        print('Usage: python cfr_param_search.py <config file> <num runs>')
     else:
-        print "run"
+        print("run")
         run(sys.argv[1], int(sys.argv[2]))

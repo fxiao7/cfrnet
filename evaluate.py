@@ -1,7 +1,8 @@
 import sys
 import os
 
-import cPickle as pickle
+#import cPickle as pickle
+import pickle
 
 from cfr.logger import Logger as Log
 Log.VERBOSE = True

@@ -1,7 +1,7 @@
 import os
 import numpy as np
 
-from logger import Logger as Log
+from cfr.logger import Logger as Log
 
 def load_result_file(file):
     arr = np.load(file)
@@ -31,12 +31,12 @@ def load_config(cfgfile):
 
 def load_single_result(result_dir):
     if Log.VERBOSE:
-        print 'Loading %s...' % result_dir
+        print('Loading %s...' % result_dir)
 
     config_path = '%s/config.txt' % result_dir
     has_config = os.path.isfile(config_path)
     if not has_config:
-        print 'WARNING: Could not find config.txt for %s. Skipping.' % os.path.basename(result_dir)
+        print('WARNING: Could not find config.txt for %s. Skipping.' % os.path.basename(result_dir))
         config = None
     else:
         config = load_config(config_path)
@@ -55,7 +55,7 @@ def load_single_result(result_dir):
     n_rep = np.max([config['repetitions'], config['experiments']])
 
     if len(train_results['pred'].shape) < 4 or train_results['pred'].shape[2] < n_rep:
-        print 'WARNING: Experiment %s appears not to have finished. Skipping.' % result_dir
+        print('WARNING: Experiment %s appears not to have finished. Skipping.' % result_dir)
         return None
 
     if has_test:
@@ -68,7 +68,7 @@ def load_single_result(result_dir):
 def load_results(output_dir):
 
     if Log.VERBOSE:
-        print 'Loading results from %s...' % output_dir
+        print('Loading results from %s...' % output_dir)
 
     ''' Detect results structure '''
     # Single result
@@ -82,11 +82,12 @@ def load_results(output_dir):
                     if os.path.isfile('%s/result.npz' % f)]
 
     if Log.VERBOSE:
-        print 'Found %d experiment configurations.' % len(exp_dirs)
+        print('Found %d experiment configurations.' % len(exp_dirs))
 
     # Load each result folder
     results = []
     for dir in exp_dirs:
+        print(dir)
         dir_result = load_single_result(dir)
         if dir_result is not None:
             results.append(dir_result)
@@ -126,7 +127,7 @@ def load_data(datapath):
         mu1s = arr['mu1']
         HAVE_TRUTH = True
     except:
-        print 'Couldn\'t find ground truth. Proceeding...'
+        print('Couldn\'t find ground truth. Proceeding...')
         ycfs = None; mu0s = None; mu1s = None
 
     data = {'x':xs, 't':ts, 'e':es, 'yf':yfs, 'ycf':ycfs, \
