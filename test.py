@@ -222,3 +222,46 @@ for i in range(10):
 
 print("test accuracy %g"%accuracy.eval(feed_dict={
     x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0}))
+
+    
+    
+x_data = np.float32(np.random.rand(2, 100)) # Ëæ»úÊäÈë
+y_data = np.dot([0.100, 0.200], x_data) + 0.300
+# ¹¹ÔìÒ»¸öÏßÐÔÄ£ÐÍ
+#
+b = tf.Variable(tf.zeros([1]))
+W = tf.Variable(tf.random_uniform([1, 2], -1.0, 1.0))
+y = tf.matmul(W, x_data) + b
+# ×îÐ¡»¯·½²î
+loss = tf.reduce_mean(tf.square(y - y_data))
+optimizer = tf.train.GradientDescentOptimizer(0.5)
+train = optimizer.minimize(loss)
+# ³õÊ¼»¯±äÁ¿
+init = tf.initialize_all_variables()
+init = tf.global_variables_initializer()
+# Æô¶¯Í¼ (graph)
+sess = tf.Session()
+sess.run(init)
+# ÄâºÏÆ½Ãæ
+for step in range(0, 201):
+    sess.run(train)
+    if step % 20 == 0:
+        print(step, sess.run(W), sess.run(b))
+# µÃµ½×î¼ÑÄâºÏ½á¹û W: [[0.100 0.200]], b: [0.300]
+
+
+matrix1 = tf.constant([[3, 3]])
+matrix2 = tf.constant([[2], [2]])
+product = tf.matmul(matrix1, matrix2)
+sess = tf.Session()
+sess.run(product)
+result = sess.run(product)
+print(result)
+sess.close()
+
+sess = tf.InteractiveSession()
+x = tf.Variable([1, 2])
+y = tf.constant([3, 4])
+x.initializer.run()
+sub = tf.subtract(x, y)
+print(sub.eval())

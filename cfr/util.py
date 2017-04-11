@@ -25,7 +25,7 @@ def log(logfile,str):
     """ Log a string in a file """
     with open(logfile,'a') as f:
         f.write(str+'\n')
-    print str
+    print(str)
 
 def save_config(fname):
     """ Save configuration """

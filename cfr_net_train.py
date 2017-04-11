@@ -415,6 +415,8 @@ def main(argv=None):  # pylint: disable=unused-argument
     """ Main entry point """
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
     outdir = FLAGS.outdir+'/results_'+timestamp+'/'
+    outdir = "C:/Users/Dsleviadm/Documents/GitHub/cfrnet/myresult/"
+    print(outdir)
     os.mkdir(outdir)
 
     try:

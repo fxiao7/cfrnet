@@ -1,0 +1,26 @@
+Traceback (most recent call last):
+  File "cfr_net_train.py", line 423, in main
+    run(outdir)
+  File "cfr_net_train.py", line 277, in run
+    CFR = cfr.cfr_net(x, t, y_, p, FLAGS, r_alpha, r_lambda, do_in, do_out, dims)
+  File "C:\Users\Dsleviadm\Documents\GitHub\cfrnet\cfr\cfr_net.py", line 25, in __init__
+    self._build_graph(x, t, y_ , p_t, FLAGS, r_alpha, r_lambda, do_in, do_out, dims)
+  File "C:\Users\Dsleviadm\Documents\GitHub\cfrnet\cfr\cfr_net.py", line 185, in _build_graph
+    imb_dist, imb_mat = wasserstein(h_rep_norm,t,p_ipm,lam=FLAGS.wass_lambda,its=FLAGS.wass_iterations,sq=False,backpropT=FLAGS.wass_bpt)
+  File "C:\Users\Dsleviadm\Documents\GitHub\cfrnet\cfr\util.py", line 191, in wasserstein
+    col = tf.concat(0,[delta*tf.ones(tf.shape(M[:,0:1])),tf.zeros((1,1))])
+  File "C:\Users\Dsleviadm\Anaconda3\envs\tensorflow\lib\site-packages\tensorflow\python\ops\array_ops.py", line 1029, in concat
+    dtype=dtypes.int32).get_shape(
+  File "C:\Users\Dsleviadm\Anaconda3\envs\tensorflow\lib\site-packages\tensorflow\python\framework\ops.py", line 637, in convert_to_tensor
+    as_ref=False)
+  File "C:\Users\Dsleviadm\Anaconda3\envs\tensorflow\lib\site-packages\tensorflow\python\framework\ops.py", line 702, in internal_convert_to_tensor
+    ret = conversion_func(value, dtype=dtype, name=name, as_ref=as_ref)
+  File "C:\Users\Dsleviadm\Anaconda3\envs\tensorflow\lib\site-packages\tensorflow\python\framework\constant_op.py", line 110, in _constant_tensor_conversion_function
+    return constant(v, dtype=dtype, name=name)
+  File "C:\Users\Dsleviadm\Anaconda3\envs\tensorflow\lib\site-packages\tensorflow\python\framework\constant_op.py", line 99, in constant
+    tensor_util.make_tensor_proto(value, dtype=dtype, shape=shape, verify_shape=verify_shape))
+  File "C:\Users\Dsleviadm\Anaconda3\envs\tensorflow\lib\site-packages\tensorflow\python\framework\tensor_util.py", line 367, in make_tensor_proto
+    _AssertCompatible(values, dtype)
+  File "C:\Users\Dsleviadm\Anaconda3\envs\tensorflow\lib\site-packages\tensorflow\python\framework\tensor_util.py", line 302, in _AssertCompatible
+    (dtype.name, repr(mismatch), type(mismatch).__name__))
+TypeError: Expected int32, got list containing Tensors of type '_Message' instead.
