@@ -8,6 +8,7 @@ def load_config(cfg_file):
 
     with open(cfg_file,'r') as f:
         for l in f:
+            print(l)
             l = l.strip()
             if len(l)>0 and not l[0] == '#':
                 vs = l.split('=')
@@ -41,7 +42,6 @@ def read_used_cfgs(used_cfg_file):
     with open(used_cfg_file, 'r') as f:
         for l in f:
             used_cfgs.add(l.strip())
-
     return used_cfgs
 
 def save_used_cfg(cfg, used_cfg_file):
@@ -50,8 +50,8 @@ def save_used_cfg(cfg, used_cfg_file):
         f.write('%s\n' % cfg_str)
 
 def run(cfg_file, num_runs):
-#    cfg_file = "configs\example_ihdp.txt"
-#    num_runs = 20
+    cfg_file = "configs\example_ihdp.txt"
+    num_runs = 20
     configs = load_config(cfg_file)
     print("config loaded")
     outdir = configs['outdir'][0]
