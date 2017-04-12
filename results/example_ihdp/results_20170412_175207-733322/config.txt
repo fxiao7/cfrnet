@@ -9,7 +9,7 @@ dim_in: 200
 dim_out: 100
 dropout_in: 1.0
 dropout_out: 1.0
-experiments: 10
+experiments: 100
 imb_fun: wass
 iterations: 1000
 loss: l2

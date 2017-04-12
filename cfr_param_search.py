@@ -50,8 +50,8 @@ def save_used_cfg(cfg, used_cfg_file):
         f.write('%s\n' % cfg_str)
 
 def run(cfg_file, num_runs):
-    cfg_file = "configs\example_ihdp.txt"
-    num_runs = 20
+#    cfg_file = "configs\example_ihdp.txt"
+#    num_runs = 20
     configs = load_config(cfg_file)
     print("config loaded")
     outdir = configs['outdir'][0]
@@ -72,6 +72,7 @@ def run(cfg_file, num_runs):
         print('------------------------------')
         print('Run %d of %d:' % (i+1, num_runs))
         print('------------------------------')
+        # only add parameters with the length longer than 1
         print('\n'.join(['%s: %s' % (str(k), str(v)) for k,v in cfg.items() if len(configs[k])>1]))
 
         flags = ' '.join('--%s %s' % (k,str(v)) for k,v in cfg.items())
