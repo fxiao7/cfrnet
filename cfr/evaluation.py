@@ -315,9 +315,9 @@ def evaluate_result(result, data, validation=False,
         n_loss_outputs = losses.shape[0]
 
         if validation:
-            objective = np.array([losses[(n_loss_outputs*i)/n_outputs,6,:] for i in range(n_outputs)]).T
+            objective = np.array([losses[int((n_loss_outputs*i)/n_outputs),6,:] for i in range(n_outputs)]).T
         else:
-            objective = np.array([losses[(n_loss_outputs*i)/n_outputs,0,:] for i in range(n_outputs)]).T
+            objective = np.array([losses[int((n_loss_outputs*i)/n_outputs),0,:] for i in range(n_outputs)]).T
 
         eval_dict['objective'] = objective
 

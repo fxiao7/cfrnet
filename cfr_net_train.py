@@ -58,7 +58,8 @@ tf.app.flags.DEFINE_boolean('reweight_sample', 1, """Whether to reweight sample 
 if FLAGS.sparse:
     import scipy.sparse as sparse
 
-NUM_ITERATIONS_PER_DECAY = 100
+#NUM_ITERATIONS_PER_DECAY = 100
+NUM_ITERATIONS_PER_DECAY = 10
 
 __DEBUG__ = False
 if FLAGS.debug:
@@ -415,7 +416,7 @@ def main(argv=None):  # pylint: disable=unused-argument
     """ Main entry point """
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
     outdir = FLAGS.outdir+'/results_'+timestamp+'/'
-    outdir = "C:/Users/Dsleviadm/Documents/GitHub/cfrnet/myresult/"
+#    outdir = "C:/Users/Dsleviadm/Documents/GitHub/cfrnet/myresult/"
     print(outdir)
     os.mkdir(outdir)
 
