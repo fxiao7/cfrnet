@@ -79,6 +79,7 @@ def run(cfg_file, num_runs):
         call('python cfr_net_train.py %s' % flags, shell=True)
 
 if __name__ == "__main__":
+    # run these if cfr_param_search.py is called from command line
     if len(sys.argv) < 3:
         print('Usage: python cfr_param_search.py <config file> <num runs>')
     else:

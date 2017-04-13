@@ -59,7 +59,6 @@ if FLAGS.sparse:
     import scipy.sparse as sparse
 
 NUM_ITERATIONS_PER_DECAY = 100
-#NUM_ITERATIONS_PER_DECAY = 10
 
 __DEBUG__ = False
 if FLAGS.debug:
