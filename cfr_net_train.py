@@ -412,6 +412,7 @@ def run(outdir):
                 np.savez(repfile_test, rep=reps_test)
 
 def main(argv=None):  # pylint: disable=unused-argument
+    #optional command line argument
     """ Main entry point """
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
     outdir = FLAGS.outdir+'/results_'+timestamp+'/'
