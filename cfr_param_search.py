@@ -8,7 +8,6 @@ def load_config(cfg_file):
 
     with open(cfg_file,'r') as f:
         for l in f:
-            print(l)
             l = l.strip()
             if len(l)>0 and not l[0] == '#':
                 vs = l.split('=')
