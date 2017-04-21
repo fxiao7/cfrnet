@@ -31,3 +31,13 @@ def linearfit():
 flags  = tf.app.flags
 flags.DEFINE_string("data_dir", "/tmp/mnist-data", "Directory for storing mnist data")
 flags.DEFINE_string("distributed_mode", False, "Run in distributed mode or not")
+
+FLAGS = flags.FLAGS
+
+def main(unused_argv):
+    print(FLAGS.data_dir)
+    print(FLAGS.distributed_mode)
+    
+    
+if __name__ == "__main__":
+    tf.app.run()

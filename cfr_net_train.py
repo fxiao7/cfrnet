@@ -204,6 +204,10 @@ def train(CFR, sess, train_step, D, I_valid, D_test, logfile, i_exp):
 
 def run(outdir):
     """ Runs an experiment and stores result in outdir """
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
+    outdir = cfg['outdir']+'/results_'+timestamp+'/'
+    datadir = cfg['datadir']
+    dataform = cfg['dataform']
 
     ''' Set up paths and start log '''
     npzfile = outdir+'result'
@@ -216,7 +220,7 @@ def run(outdir):
     logfile = outdir+'log.txt'
     f = open(logfile,'w')
     f.close()
-    dataform = FLAGS.datadir + FLAGS.dataform
+#    dataform = FLAGS.datadir + FLAGS.dataform
 
     has_test = False
     if not FLAGS.data_test == '': # if test set supplied
