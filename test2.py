@@ -41,3 +41,7 @@ def main(unused_argv):
     
 if __name__ == "__main__":
     tf.app.run()
+
+
+data_test=load_data("data\\ihdp_npci_1-100.test.npz")
+data_train=load_data("data\\ihdp_npci_1-100.train.npz")
