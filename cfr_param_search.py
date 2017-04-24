@@ -49,8 +49,8 @@ def save_used_cfg(cfg, used_cfg_file):
         f.write('%s\n' % cfg_str)
 
 def run(cfg_file, num_runs):
-    cfg_file = "configs\example_ihdp.txt"
-    num_runs = 20
+#    cfg_file = "configs\example_ihdp.txt"
+#    num_runs = 20
     configs = load_config(cfg_file)
     print("config loaded")
     outdir = configs['outdir'][0]

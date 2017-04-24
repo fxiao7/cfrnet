@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Apr 24 16:02:27 2017
+
+@author: Dsleviadm
+"""
+
 import tensorflow as tf
 import numpy as np
 import sys, os
@@ -204,6 +211,10 @@ def train(CFR, sess, train_step, D, I_valid, D_test, logfile, i_exp):
 
 def run(outdir):
     """ Runs an experiment and stores result in outdir """
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
+    outdir = cfg['outdir']+'/results_'+timestamp+'/'
+    datadir = cfg['datadir']
+    dataform = cfg['dataform']
 
     ''' Set up paths and start log '''
     npzfile = outdir+'result'
@@ -216,7 +227,7 @@ def run(outdir):
     logfile = outdir+'log.txt'
     f = open(logfile,'w')
     f.close()
-    dataform = FLAGS.datadir + FLAGS.dataform
+#    dataform = FLAGS.datadir + FLAGS.dataform
 
     has_test = False
     if not FLAGS.data_test == '': # if test set supplied
@@ -412,9 +423,13 @@ def run(outdir):
                 np.savez(repfile_test, rep=reps_test)
 
 def main(argv=None):  # pylint: disable=unused-argument
+    #optional command line argument
     """ Main entry point """
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
+    batch_norm=configs['batch_norm']
+    
     outdir = FLAGS.outdir+'/results_'+timestamp+'/'
+    print(outdir)
     os.mkdir(outdir)
 
     try:
