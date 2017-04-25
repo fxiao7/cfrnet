@@ -15,7 +15,7 @@ import traceback
 
 import cfr.cfr_net as cfr
 from cfr.util import *
-
+import cfr.cfr_net_mytest as cfr_mytest
 ''' Define parameter flags '''
 FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_string('loss', 'l2', """Which loss function to use (l1/l2/log)""")
@@ -62,7 +62,48 @@ tf.app.flags.DEFINE_float('val_part', 0, """Validation part. """)
 tf.app.flags.DEFINE_boolean('split_output', 0, """Whether to split output layers between treated and control. """)
 tf.app.flags.DEFINE_boolean('reweight_sample', 1, """Whether to reweight sample for prediction loss with average treatment probability. """)
 
-if FLAGS.sparse:
+seed=1
+batch_norm=cfg['batch_norm']
+batch_size=cfg['batch_size']
+data_test=cfg['data_test']
+datadir=cfg['datadir']
+dataform=cfg['dataform']
+decay=cfg['decay']
+dim_in=cfg['dim_in']
+dim_out=cfg['dim_out']
+dropout_in=cfg['dropout_in']
+dropout_out=cfg['dropout_out']
+experiments=cfg['experiments']
+imb_fun=cfg['imb_fun']
+iterations=cfg['iterations']
+loss=cfg['loss']
+lrate=cfg['lrate']
+lrate_decay=cfg['lrate_decay']
+n_in=cfg['n_in']
+n_out=cfg['n_out']
+nonlin=cfg['nonlin']
+normalization=cfg['normalization']
+optimizer=cfg['optimizer']
+outdir=cfg['outdir']
+p_alpha=cfg['p_alpha']
+p_lambda=cfg['p_lambda']
+pred_output_delay=cfg['pred_output_delay']
+rbf_sigma=cfg['rbf_sigma']
+rep_weight_decay=cfg['rep_weight_decay']
+repetitions=cfg['repetitions']
+reweight_sample=cfg['reweight_sample']
+sparse=cfg['sparse']
+split_output=cfg['split_output']
+use_p_correction=cfg['use_p_correction']
+val_part=cfg['val_part']
+varsel=cfg['varsel']
+wass_bpt=cfg['wass_bpt']
+wass_iterations=cfg['wass_iterations']
+wass_lambda=cfg['wass_lambda']
+weight_init=cfg['weight_init']
+
+
+if cfg['sparse']:
     import scipy.sparse as sparse
 
 NUM_ITERATIONS_PER_DECAY = 100
@@ -211,10 +252,6 @@ def train(CFR, sess, train_step, D, I_valid, D_test, logfile, i_exp):
 
 def run(outdir):
     """ Runs an experiment and stores result in outdir """
-    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
-    outdir = cfg['outdir']+'/results_'+timestamp+'/'
-    datadir = cfg['datadir']
-    dataform = cfg['dataform']
 
     ''' Set up paths and start log '''
     npzfile = outdir+'result'
@@ -227,22 +264,22 @@ def run(outdir):
     logfile = outdir+'log.txt'
     f = open(logfile,'w')
     f.close()
-#    dataform = FLAGS.datadir + FLAGS.dataform
+    dataform = datadir + dataform
 
     has_test = False
-    if not FLAGS.data_test == '': # if test set supplied
+    if not data_test == '': # if test set supplied
         has_test = True
-        dataform_test = FLAGS.datadir + FLAGS.data_test
-
+        dataform_test = datadir + data_test
+            
     ''' Set random seeds '''
-    random.seed(FLAGS.seed)
-    tf.set_random_seed(FLAGS.seed)
-    np.random.seed(FLAGS.seed)
+    random.seed(seed)
+    tf.set_random_seed(seed)
+    np.random.seed(seed)
 
     ''' Save parameters '''
     save_config(outdir+'config.txt')
 
-    log(logfile, 'Training with hyperparameters: alpha=%.2g, lambda=%.2g' % (FLAGS.p_alpha,FLAGS.p_lambda))
+    log(logfile, 'Training with hyperparameters: alpha=%.2g, lambda=%.2g' % (p_alpha,p_lambda))
 
     ''' Load Data '''
     npz_input = False
@@ -284,23 +321,23 @@ def run(outdir):
 
     ''' Define model graph '''
     log(logfile, 'Defining graph...\n')
-    dims = [D['dim'], FLAGS.dim_in, FLAGS.dim_out]
-    CFR = cfr.cfr_net(x, t, y_, p, FLAGS, r_alpha, r_lambda, do_in, do_out, dims)
+    dims = [D['dim'], dim_in, dim_out]
+    CFR = cfr.cfr_net(x, t, y_, p, cfg, r_alpha, r_lambda, do_in, do_out, dims)
 
     ''' Set up optimizer '''
     global_step = tf.Variable(0, trainable=False)
-    lr = tf.train.exponential_decay(FLAGS.lrate, global_step, \
-        NUM_ITERATIONS_PER_DECAY, FLAGS.lrate_decay, staircase=True)
+    lr = tf.train.exponential_decay(lrate, global_step, \
+        NUM_ITERATIONS_PER_DECAY, lrate_decay, staircase=True)
 
     opt = None
-    if FLAGS.optimizer == 'Adagrad':
+    if optimizer == 'Adagrad':
         opt = tf.train.AdagradOptimizer(lr)
-    elif FLAGS.optimizer == 'GradientDescent':
+    elif optimizer == 'GradientDescent':
         opt = tf.train.GradientDescentOptimizer(lr)
-    elif FLAGS.optimizer == 'Adam':
+    elif optimizer == 'Adam':
         opt = tf.train.AdamOptimizer(lr)
     else:
-        opt = tf.train.RMSPropOptimizer(lr, FLAGS.decay)
+        opt = tf.train.RMSPropOptimizer(lr, decay)
 
     ''' Unused gradient clipping '''
     #gvs = opt.compute_gradients(CFR.tot_loss)
@@ -426,9 +463,8 @@ def main(argv=None):  # pylint: disable=unused-argument
     #optional command line argument
     """ Main entry point """
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
-    batch_norm=configs['batch_norm']
     
-    outdir = FLAGS.outdir+'/results_'+timestamp+'/'
+    outdir = outdir+'/results_'+timestamp+'/'
     print(outdir)
     os.mkdir(outdir)
 
