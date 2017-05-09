@@ -322,7 +322,7 @@ def run(outdir):
     ''' Define model graph '''
     log(logfile, 'Defining graph...\n')
     dims = [D['dim'], dim_in, dim_out]
-    CFR = cfr.cfr_net(x, t, y_, p, cfg, r_alpha, r_lambda, do_in, do_out, dims)
+    CFR = cfr_mytest.cfr_net(x, t, y_, p, cfg, r_alpha, r_lambda, do_in, do_out, dims)
 
     ''' Set up optimizer '''
     global_step = tf.Variable(0, trainable=False)
@@ -463,9 +463,7 @@ def main(argv=None):  # pylint: disable=unused-argument
     #optional command line argument
     """ Main entry point """
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
-    
     outdir = outdir+'/results_'+timestamp+'/'
-    print(outdir)
     os.mkdir(outdir)
 
     try:

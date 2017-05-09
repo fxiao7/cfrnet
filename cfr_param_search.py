@@ -41,6 +41,7 @@ def read_used_cfgs(used_cfg_file):
     with open(used_cfg_file, 'r') as f:
         for l in f:
             used_cfgs.add(l.strip())
+            
     return used_cfgs
 
 def save_used_cfg(cfg, used_cfg_file):
@@ -49,12 +50,11 @@ def save_used_cfg(cfg, used_cfg_file):
         f.write('%s\n' % cfg_str)
 
 def run(cfg_file, num_runs):
-    cfg_file = "configs\example_ihdp.txt"
-    num_runs = 20
     configs = load_config(cfg_file)
-    print("config loaded")
+
     outdir = configs['outdir'][0]
     used_cfg_file = '%s/used_configs.txt' % outdir
+    print(used_cfg_file)
 
     if not os.path.isfile(used_cfg_file):
         f = open(used_cfg_file, 'w')
@@ -82,5 +82,4 @@ if __name__ == "__main__":
     if len(sys.argv) < 3:
         print('Usage: python cfr_param_search.py <config file> <num runs>')
     else:
-        print("run")
         run(sys.argv[1], int(sys.argv[2]))
