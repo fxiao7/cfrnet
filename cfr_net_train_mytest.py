@@ -464,7 +464,7 @@ def main(argv=None):  # pylint: disable=unused-argument
     """ Main entry point """
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
     outdir = outdir+'/results_'+timestamp+'/'
-    os.mkdir(outdir)
+    os.mkdir(outdir) # make a directory
 
     try:
         run(outdir)
