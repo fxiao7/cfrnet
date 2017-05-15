@@ -56,7 +56,7 @@ def run(cfg_file, num_runs):
 
     outdir = configs['outdir'][0]
     used_cfg_file = '%s/used_configs.txt' % outdir
-    print(used_cfg_file)
+#    print(used_cfg_file)
 
     if not os.path.isfile(used_cfg_file):
         f = open(used_cfg_file, 'w')
@@ -64,9 +64,9 @@ def run(cfg_file, num_runs):
 
     for i in range(num_runs):
         cfg = sample_config(configs)
-        if is_used_cfg(cfg, used_cfg_file):
-            print('Configuration used, skipping')
-            continue
+#        if is_used_cfg(cfg, used_cfg_file):
+#            print('Configuration used, skipping')
+#            continue
 
         save_used_cfg(cfg, used_cfg_file)
 

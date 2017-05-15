@@ -96,11 +96,13 @@ def train(CFR, sess, train_step, D, I_valid, D_test, logfile, i_exp):
     preds_train = []
     preds_test = []
 
+    print("start loss computation")
     ''' Compute losses '''
     losses = []
     obj_loss, f_error, imb_err = sess.run([CFR.tot_loss, CFR.pred_loss, CFR.imb_dist],\
       feed_dict=dict_factual)
-
+    print("end loss computation")
+    
     cf_error = np.nan
     if D['HAVE_TRUTH']:
         cf_error = sess.run(CFR.pred_loss, feed_dict=dict_cfactual)
@@ -415,7 +417,6 @@ def main(argv=None):  # pylint: disable=unused-argument
     """ Main entry point """
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
     outdir = FLAGS.outdir+'/results_'+timestamp+'/'
-    print(outdir)
     os.mkdir(outdir)
 
     try:

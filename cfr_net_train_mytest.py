@@ -125,13 +125,11 @@ def train(CFR, sess, train_step, D, I_valid, D_test, logfile, i_exp):
 
     ''' Set up loss feed_dicts'''
     dict_factual = {CFR.x: D['x'][I_train,:], CFR.t: D['t'][I_train,:], CFR.y_: D['yf'][I_train,:], \
-      CFR.do_in: 1.0, CFR.do_out: 1.0, CFR.r_alpha: FLAGS.p_alpha, \
-      CFR.r_lambda: FLAGS.p_lambda, CFR.p_t: p_treated}
+      CFR.do_in: 1.0, CFR.do_out: 1.0, CFR.r_alpha: p_alpha, CFR.r_lambda: p_lambda, CFR.p_t: p_treated}
 
-    if FLAGS.val_part > 0:
+    if val_part > 0:
         dict_valid = {CFR.x: D['x'][I_valid,:], CFR.t: D['t'][I_valid,:], CFR.y_: D['yf'][I_valid,:], \
-          CFR.do_in: 1.0, CFR.do_out: 1.0, CFR.r_alpha: FLAGS.p_alpha, \
-          CFR.r_lambda: FLAGS.p_lambda, CFR.p_t: p_treated}
+          CFR.do_in: 1.0, CFR.do_out: 1.0, CFR.r_alpha: p_alpha, CFR.r_lambda: p_lambda, CFR.p_t: p_treated}
 
     if D['HAVE_TRUTH']:
         dict_cfactual = {CFR.x: D['x'][I_train,:], CFR.t: 1-D['t'][I_train,:], CFR.y_: D['ycf'][I_train,:], \
@@ -154,7 +152,7 @@ def train(CFR, sess, train_step, D, I_valid, D_test, logfile, i_exp):
         cf_error = sess.run(CFR.pred_loss, feed_dict=dict_cfactual)
 
     valid_obj = np.nan; valid_imb = np.nan; valid_f_error = np.nan;
-    if FLAGS.val_part > 0:
+    if val_part > 0:
         valid_obj, valid_f_error, valid_imb = sess.run([CFR.tot_loss, CFR.pred_loss, CFR.imb_dist],\
           feed_dict=dict_valid)
 
@@ -166,10 +164,10 @@ def train(CFR, sess, train_step, D, I_valid, D_test, logfile, i_exp):
     reps_test = []
 
     ''' Train for multiple iterations '''
-    for i in range(FLAGS.iterations):
+    for i in range(iterations):
 
         ''' Fetch sample '''
-        I = random.sample(range(0, n_train), FLAGS.batch_size)
+        I = random.sample(range(0, n_train), batch_size)
         x_batch = D['x'][I_train,:][I,:]
         t_batch = D['t'][I_train,:][I]
         y_batch = D['yf'][I_train,:][I]
@@ -181,16 +179,16 @@ def train(CFR, sess, train_step, D, I_valid, D_test, logfile, i_exp):
         ''' Do one step of gradient descent '''
         if not objnan:
             sess.run(train_step, feed_dict={CFR.x: x_batch, CFR.t: t_batch, \
-                CFR.y_: y_batch, CFR.do_in: FLAGS.dropout_in, CFR.do_out: FLAGS.dropout_out, \
-                CFR.r_alpha: FLAGS.p_alpha, CFR.r_lambda: FLAGS.p_lambda, CFR.p_t: p_treated})
+                CFR.y_: y_batch, CFR.do_in: FLAGS.dropout_in, CFR.do_out: dropout_out, \
+                CFR.r_alpha: p_alpha, CFR.r_lambda: p_lambda, CFR.p_t: p_treated})
 
         ''' Project variable selection weights '''
-        if FLAGS.varsel:
+        if varsel:
             wip = simplex_project(sess.run(CFR.weights_in[0]), 1)
             sess.run(CFR.projection, feed_dict={CFR.w_proj: wip})
 
         ''' Compute loss every N iterations '''
-        if i % FLAGS.output_delay == 0 or i==FLAGS.iterations-1:
+        if i % output_delay == 0 or i==iterations-1:
             obj_loss,f_error,imb_err = sess.run([CFR.tot_loss, CFR.pred_loss, CFR.imb_dist],
                 feed_dict=dict_factual)
 
@@ -202,14 +200,14 @@ def train(CFR, sess, train_step, D, I_valid, D_test, logfile, i_exp):
                 cf_error = sess.run(CFR.pred_loss, feed_dict=dict_cfactual)
 
             valid_obj = np.nan; valid_imb = np.nan; valid_f_error = np.nan;
-            if FLAGS.val_part > 0:
+            if val_part > 0:
                 valid_obj, valid_f_error, valid_imb = sess.run([CFR.tot_loss, CFR.pred_loss, CFR.imb_dist], feed_dict=dict_valid)
 
             losses.append([obj_loss, f_error, cf_error, imb_err, valid_f_error, valid_imb, valid_obj])
             loss_str = str(i) + '\tObj: %.3f,\tF: %.3f,\tCf: %.3f,\tImb: %.2g,\tVal: %.3f,\tValImb: %.2g,\tValObj: %.2f' \
                         % (obj_loss, f_error, cf_error, imb_err, valid_f_error, valid_imb, valid_obj)
 
-            if FLAGS.loss == 'log':
+            if loss == 'log':
                 y_pred = sess.run(CFR.output, feed_dict={CFR.x: x_batch, \
                     CFR.t: t_batch, CFR.do_in: 1.0, CFR.do_out: 1.0})
                 y_pred = 1.0*(y_pred > 0.5)
@@ -223,7 +221,7 @@ def train(CFR, sess, train_step, D, I_valid, D_test, logfile, i_exp):
                 objnan = True
 
         ''' Compute predictions every M iterations '''
-        if (FLAGS.pred_output_delay > 0 and i % FLAGS.pred_output_delay == 0) or i==FLAGS.iterations-1:
+        if (pred_output_delay > 0 and i % pred_output_delay == 0) or i==iterations-1:
 
             y_pred_f = sess.run(CFR.output, feed_dict={CFR.x: D['x'], \
                 CFR.t: D['t'], CFR.do_in: 1.0, CFR.do_out: 1.0})
@@ -238,7 +236,7 @@ def train(CFR, sess, train_step, D, I_valid, D_test, logfile, i_exp):
                     CFR.t: 1-D_test['t'], CFR.do_in: 1.0, CFR.do_out: 1.0})
                 preds_test.append(np.concatenate((y_pred_f_test, y_pred_cf_test),axis=1))
 
-            if FLAGS.save_rep and i_exp == 1:
+            if save_rep and i_exp == 1:
                 reps_i = sess.run([CFR.h_rep], feed_dict={CFR.x: D['x'], \
                     CFR.do_in: 1.0, CFR.do_out: 0.0})
                 reps.append(reps_i)
@@ -351,31 +349,31 @@ def run(outdir):
     all_preds_train = []
     all_preds_test = []
     all_valid = []
-    if FLAGS.varsel:
+    if varsel:
         all_weights = None
         all_beta = None
 
     all_preds_test = []
 
     ''' Handle repetitions '''
-    n_experiments = FLAGS.experiments
-    if FLAGS.repetitions>1:
-        if FLAGS.experiments>1:
+    n_experiments = experiments
+    if repetitions>1:
+        if experiments>1:
             log(logfile, 'ERROR: Use of both repetitions and multiple experiments is currently not supported.')
             sys.exit(1)
-        n_experiments = FLAGS.repetitions
+        n_experiments = repetitions
 
     ''' Run for all repeated experiments '''
     for i_exp in range(1,n_experiments+1):
 
-        if FLAGS.repetitions>1:
-            log(logfile, 'Training on repeated initialization %d/%d...' % (i_exp, FLAGS.repetitions))
+        if repetitions>1:
+            log(logfile, 'Training on repeated initialization %d/%d...' % (i_exp, repetitions))
         else:
             log(logfile, 'Training on experiment %d/%d...' % (i_exp, n_experiments))
 
         ''' Load Data (if multiple repetitions, reuse first set)'''
 
-        if i_exp==1 or FLAGS.experiments>1:
+        if i_exp==1 or experiments>1:
             D_exp_test = None
             if npz_input:
                 D_exp = {}
@@ -408,7 +406,7 @@ def run(outdir):
                 D_exp_test['HAVE_TRUTH'] = D_test['HAVE_TRUTH']
 
         ''' Split into training and validation sets '''
-        I_train, I_valid = validation_split(D_exp, FLAGS.val_part)
+        I_train, I_valid = validation_split(D_exp, val_part)
 
         ''' Run training loop '''
         losses, preds_train, preds_test, reps, reps_test = \
@@ -428,13 +426,13 @@ def run(outdir):
 
         ''' Store predictions '''
         log(logfile, 'Saving result to %s...\n' % outdir)
-        if FLAGS.output_csv:
+        if output_csv:
             np.savetxt('%s_%d.csv' % (outform,i_exp), preds_train[-1], delimiter=',')
             np.savetxt('%s_%d.csv' % (outform_test,i_exp), preds_test[-1], delimiter=',')
             np.savetxt('%s_%d.csv' % (lossform,i_exp), losses, delimiter=',')
 
         ''' Compute weights if doing variable selection '''
-        if FLAGS.varsel:
+        if varsel:
             if i_exp == 1:
                 all_weights = sess.run(CFR.weights_in[0])
                 all_beta = sess.run(CFR.weights_pred)
@@ -444,7 +442,7 @@ def run(outdir):
 
         ''' Save results and predictions '''
         all_valid.append(I_valid)
-        if FLAGS.varsel:
+        if varsel:
             np.savez(npzfile, pred=out_preds_train, loss=out_losses, w=all_weights, beta=all_beta, val=np.array(all_valid))
         else:
             np.savez(npzfile, pred=out_preds_train, loss=out_losses, val=np.array(all_valid))
@@ -453,7 +451,7 @@ def run(outdir):
             np.savez(npzfile_test, pred=out_preds_test)
 
         ''' Save representations '''
-        if FLAGS.save_rep and i_exp == 1:
+        if save_rep and i_exp == 1:
             np.savez(repfile, rep=reps)
 
             if has_test:
