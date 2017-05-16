@@ -62,7 +62,6 @@ tf.app.flags.DEFINE_float('val_part', 0, """Validation part. """)
 tf.app.flags.DEFINE_boolean('split_output', 0, """Whether to split output layers between treated and control. """)
 tf.app.flags.DEFINE_boolean('reweight_sample', 1, """Whether to reweight sample for prediction loss with average treatment probability. """)
 
-seed=1
 batch_norm=cfg['batch_norm']
 batch_size=cfg['batch_size']
 data_test=cfg['data_test']
@@ -103,13 +102,21 @@ wass_lambda=cfg['wass_lambda']
 weight_init=cfg['weight_init']
 
 
+seed=1 #"""Seed. """)
+output_csv=0    #,"""Whether to save a CSV file with the results""")
+output_delay=100 #"""Number of iterations between log/loss outputs. """)
+debug=0 # """Debug mode. """)
+save_rep=0 # """Save representations after training. """)
+
+
+
 if cfg['sparse']:
     import scipy.sparse as sparse
 
 NUM_ITERATIONS_PER_DECAY = 100
 
 __DEBUG__ = False
-if FLAGS.debug:
+if debug:
     __DEBUG__ = True
 
 def train(CFR, sess, train_step, D, I_valid, D_test, logfile, i_exp):
