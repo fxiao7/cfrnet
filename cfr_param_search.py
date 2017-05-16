@@ -2,6 +2,7 @@ import sys
 import os
 import numpy as np
 from subprocess import call
+import pdb
 
 def load_config(cfg_file):
     cfg = {}
@@ -56,7 +57,6 @@ def run(cfg_file, num_runs):
 
     outdir = configs['outdir'][0]
     used_cfg_file = '%s/used_configs.txt' % outdir
-#    print(used_cfg_file)
 
     if not os.path.isfile(used_cfg_file):
         f = open(used_cfg_file, 'w')
@@ -72,10 +72,9 @@ def run(cfg_file, num_runs):
 
         print('------------------------------')
         print('Run %d of %d:' % (i+1, num_runs))
-        print('------------------------------')
         # only add parameters with the length longer than 1
         print('\n'.join(['%s: %s' % (str(k), str(v)) for k,v in cfg.items() if len(configs[k])>1]))
-
+        print('------------------------------')
         flags = ' '.join('--%s %s' % (k,str(v)) for k,v in cfg.items())
         call('python cfr_net_train.py %s' % flags, shell=True)
 

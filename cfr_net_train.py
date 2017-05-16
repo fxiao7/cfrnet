@@ -10,6 +10,7 @@ import cfr.cfr_net as cfr
 from cfr.util import *
 
 ''' Define parameter flags '''
+# default parameter
 FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_string('loss', 'l2', """Which loss function to use (l1/l2/log)""")
 tf.app.flags.DEFINE_integer('n_in', 2, """Number of representation layers. """)
@@ -206,7 +207,6 @@ def train(CFR, sess, train_step, D, I_valid, D_test, logfile, i_exp):
 
 def run(outdir):
     """ Runs an experiment and stores result in outdir """
-
     ''' Set up paths and start log '''
     npzfile = outdir+'result'
     npzfile_test = outdir+'result.test'
@@ -364,6 +364,7 @@ def run(outdir):
         ''' Split into training and validation sets '''
         I_train, I_valid = validation_split(D_exp, FLAGS.val_part)
 
+        print("******************run training loop*****************")
         ''' Run training loop '''
         losses, preds_train, preds_test, reps, reps_test = \
             train(CFR, sess, train_step, D_exp, I_valid, \
@@ -418,7 +419,6 @@ def main(argv=None):  # pylint: disable=unused-argument
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
     outdir = FLAGS.outdir+'/results_'+timestamp+'/'
     os.mkdir(outdir)
-
     try:
         run(outdir)
     except Exception as e:
