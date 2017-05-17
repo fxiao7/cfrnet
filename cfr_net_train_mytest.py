@@ -119,8 +119,8 @@ if debug:
 
 def train(CFR, sess, train_step, D, I_valid, D_test, logfile, i_exp):
     """ Trains a CFR model on supplied data """
-#    D=D_exp
-#    D_test=D_exp_test
+    D=D_exp
+    D_test=D_exp_test
     
     ''' Train/validation split '''
     n = D['x'].shape[0]
