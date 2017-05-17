@@ -13,7 +13,7 @@ import random
 import datetime
 import traceback
 
-import cfr.cfr_net as cfr
+#import cfr.cfr_net as cfr
 from cfr.util import *
 import cfr.cfr_net_mytest as cfr_mytest
 ''' Define parameter flags '''
@@ -101,14 +101,11 @@ wass_iterations=cfg['wass_iterations']
 wass_lambda=cfg['wass_lambda']
 weight_init=cfg['weight_init']
 
-
 seed=1 #"""Seed. """)
 output_csv=0    #,"""Whether to save a CSV file with the results""")
 output_delay=100 #"""Number of iterations between log/loss outputs. """)
 debug=0 # """Debug mode. """)
-save_rep=0 # """Save representations after training. """)
-
-
+save_rep=1 # """Save representations after training. """)
 
 if cfg['sparse']:
     import scipy.sparse as sparse
@@ -119,9 +116,12 @@ __DEBUG__ = False
 if debug:
     __DEBUG__ = True
 
+
 def train(CFR, sess, train_step, D, I_valid, D_test, logfile, i_exp):
     """ Trains a CFR model on supplied data """
-
+#    D=D_exp
+#    D_test=D_exp_test
+    
     ''' Train/validation split '''
     n = D['x'].shape[0]
     I = range(n); I_train = list(set(I)-set(I_valid))
@@ -186,7 +186,7 @@ def train(CFR, sess, train_step, D, I_valid, D_test, logfile, i_exp):
         ''' Do one step of gradient descent '''
         if not objnan:
             sess.run(train_step, feed_dict={CFR.x: x_batch, CFR.t: t_batch, \
-                CFR.y_: y_batch, CFR.do_in: FLAGS.dropout_in, CFR.do_out: dropout_out, \
+                CFR.y_: y_batch, CFR.do_in: dropout_in, CFR.do_out: dropout_out, \
                 CFR.r_alpha: p_alpha, CFR.r_lambda: p_lambda, CFR.p_t: p_treated})
 
         ''' Project variable selection weights '''
@@ -416,8 +416,7 @@ def run(outdir):
         I_train, I_valid = validation_split(D_exp, val_part)
 
         ''' Run training loop '''
-        losses, preds_train, preds_test, reps, reps_test = \
-            train(CFR, sess, train_step, D_exp, I_valid, \
+        losses, preds_train, preds_test, reps, reps_test = train(CFR, sess, train_step, D_exp, I_valid, \
                 D_exp_test, logfile, i_exp)
 
         ''' Collect all reps '''

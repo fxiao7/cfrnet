@@ -2,7 +2,7 @@ import sys
 import os
 import numpy as np
 from subprocess import call
-import pdb
+#import pdb
 
 def load_config(cfg_file):
     cfg = {}
