@@ -84,9 +84,11 @@ def evaluate(config_file, overwrite=False, filters=None):
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print('Usage: python evaluate.py <config_file> <overwrite (default 0)> <filters (optional)>')
-    else:
+    else:        
         config_file = sys.argv[1]
-
+        overwrite = False
+        filters = "{p_alpha: 0}"
+        config_file = "configs/example_ihdp.txt"
         overwrite = False
         if len(sys.argv)>2 and sys.argv[2] == '1':
             overwrite = True

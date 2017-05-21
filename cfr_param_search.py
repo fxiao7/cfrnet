@@ -51,14 +51,15 @@ def save_used_cfg(cfg, used_cfg_file):
         f.write('%s\n' % cfg_str)
 
 def run(cfg_file, num_runs):
-    cfg_file="configs/example_ihdp.txt"
-    num_runs=10
+#    cfg_file="configs/example_ihdp.txt"
+#    num_runs=10
     configs = load_config(cfg_file)
 
     outdir = configs['outdir'][0]
     used_cfg_file = '%s/used_configs.txt' % outdir
-
-    if not os.path.isfile(used_cfg_file):
+    
+    #create a cfg file if it doesn't exist
+    if not os.path.isfile(used_cfg_file): 
         f = open(used_cfg_file, 'w')
         f.close()
 
