@@ -51,8 +51,8 @@ def save_used_cfg(cfg, used_cfg_file):
         f.write('%s\n' % cfg_str)
 
 def run(cfg_file, num_runs):
-#    cfg_file="configs/example_ihdp.txt"
-#    num_runs=10
+    cfg_file="configs/example_ihdp.txt"
+    num_runs=10
     configs = load_config(cfg_file)
 
     outdir = configs['outdir'][0]
@@ -64,7 +64,7 @@ def run(cfg_file, num_runs):
         f.close()
 
     for i in range(num_runs):
-        cfg = sample_config(configs)
+        cfg = sample_config(configs)    # sample configs if a parameter has more than one values
 #        if is_used_cfg(cfg, used_cfg_file):
 #            print('Configuration used, skipping')
 #            continue
