@@ -282,7 +282,7 @@ def run(outdir):
     np.random.seed(seed)
 
     ''' Save parameters '''
-    save_config(outdir+'config.txt')
+    save_config(outdir+'config.txt') # using FLAGS parameters
 
     log(logfile, 'Training with hyperparameters: alpha=%.2g, lambda=%.2g' % (p_alpha,p_lambda))
 
