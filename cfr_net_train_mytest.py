@@ -119,8 +119,8 @@ if debug:
 
 def train(CFR, sess, train_step, D, I_valid, D_test, logfile, i_exp):
     """ Trains a CFR model on supplied data """
-#    D=D_exp
-#    D_test=D_exp_test
+    D=D_exp
+    D_test=D_exp_test
     
     ''' Train/validation split '''
     n = D['x'].shape[0]
@@ -348,7 +348,8 @@ def run(outdir):
     #gvs = opt.compute_gradients(CFR.tot_loss)
     #capped_gvs = [(tf.clip_by_value(grad, -1.0, 1.0), var) for grad, var in gvs]
     #train_step = opt.apply_gradients(capped_gvs, global_step=global_step)
-
+    
+    #tf.train.AdamOptimizer(lr).minimize(CFR.tot_loss, global_step=global_step)
     train_step = opt.minimize(CFR.tot_loss,global_step=global_step)
 
     ''' Set up for saving variables '''
