@@ -81,3 +81,17 @@ print(accuracy.eval(feed_dict={x: mnist.test.images, y_: mnist.test.labels}))
 
 print(accuracy.eval)
 correct_prediction
+
+
+
+x = tf.placeholder(tf.float32,(3,4))
+y =  x + 2
+ 
+sess = tf.Session()
+print(sess.run(y)) # will cause an error
+ 
+s = np.random.rand(3,4)
+print(sess.run(y, feed_dict={x:s}))
+
+W=tf.Variable(tf.random_normal([784, 200], stddev=0.35), name="W")
+X=tf.placeholder(tf.float32, shape=[None, 128], name="X")
