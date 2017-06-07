@@ -120,7 +120,8 @@ class cfr_net(object):
                         bn_scales.append(tf.Variable(tf.ones([dim_in])))
                         z = tf.nn.batch_normalization(z, batch_mean, batch_var, bn_biases[-1], bn_scales[-1], 1e-3)
 
-                h_in.append(self.nonlin(z)) #tf.nn.elu(z)
+#                h_in.append(self.nonlin(z)) #tf.nn.elu(z)
+                h_in.append(tf.nn.elu(z))
                 h_in[i+1] = tf.nn.dropout(h_in[i+1], do_in)
 
         h_rep = h_in[len(h_in)-1]

@@ -95,3 +95,6 @@ print(sess.run(y, feed_dict={x:s}))
 
 W=tf.Variable(tf.random_normal([784, 200], stddev=0.35), name="W")
 X=tf.placeholder(tf.float32, shape=[None, 128], name="X")
+W.get_shape()   # get the shape of tensor variable
+W.get_shape().as_list()
+t  = tf.placeholder("float", shape=[None, 1], name='t')   # Treatent
