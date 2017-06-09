@@ -98,3 +98,9 @@ X=tf.placeholder(tf.float32, shape=[None, 128], name="X")
 W.get_shape()   # get the shape of tensor variable
 W.get_shape().as_list()
 t  = tf.placeholder("float", shape=[None, 1], name='t')   # Treatent
+x = D_test['x'][:,:,i_exp-1]
+t  = D_test['t'][:,i_exp-1:i_exp]
+yf = D_test['yf'][:,i_exp-1:i_exp]
+
+t  = D_test['t'][:,i_exp-1]
+yf = D_test['yf'][:,i_exp-1]
